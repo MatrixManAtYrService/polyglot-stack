@@ -8,19 +8,20 @@
     self,
     nixpkgs,
     flake-utils,
-    ...
-  } @ inputs:
+  }:
     flake-utils.lib.eachDefaultSystem (system: let
       pkgs = import nixpkgs {
         inherit system;
       };
-    in {
-      defaultPackage = pkgs.hello;
 
-      devShells.default = pkgs.mkShell {
-        packages = [
-          pkgs.nim
-        ];
-      };
+    in {
+        devShells.default = with pkgs; mkShell {
+          packages = [
+            nim
+            python311
+            python311Packages.black
+            ruff
+          ];
+        };
     });
 }
